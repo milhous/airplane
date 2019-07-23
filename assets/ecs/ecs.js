@@ -68,6 +68,40 @@ class ECS {
     }
 
     /*
+     * 初始化
+     * @param {object} ui UI
+     * @param {object} Workers worker类列表
+     * @param {object} Systems 系统类列表
+     * @param {object} keyCode 输入码
+     */
+    init({
+        ui,
+        Workers,
+        Systems,
+        keyCode
+    }){
+        if (!!ui) {
+            this._ui = ui;
+        }
+
+        if (!!keyCode) {
+            this.input.keyCode = keyCode;
+        }
+
+        if (!!Workers) {
+            for (const name in Workers) {
+                this.workerManager.register(name, Workers[name]);
+            }
+        }
+
+        if (!!Systems) {
+            for (const name in Systems) {
+                this.systemManager.register(new Systems[name]());
+            }
+        }
+    }
+
+    /*
      * 更新
      * @param {number} dt 帧间隔时间
      */
