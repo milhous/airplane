@@ -10,9 +10,16 @@ import Position from 'components/Position.js';
 import Tween from 'components/Tween.js';
 import Skin from 'components/Skin.js';
 
+/*
+ * 属性相关组件
+ * PlayerProp - 玩家
+ */
+import PlayerProp from 'components/PlayerProp.js';
+
 export default {
     Owner,
     Position,
     Tween,
-    Skin
+    Skin,
+    PlayerProp
 };

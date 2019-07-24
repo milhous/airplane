@@ -69,56 +69,6 @@ export default class RenderSystem extends ecs.System {
         }
     }
 
-    // 切换回合
-    nextRound(time = 0) {
-        const worldEntity = this._ecs.entityManager.first('World');
-        const environment = worldEntity.getComp(Components.Environment);
-
-        const playerEntity = this._ecs.entityManager.find('Player', Components.Owner, { 'id': environment.actId });
-
-        if (playerEntity) {
-            const playerProp = playerEntity.getComp(Components.PlayerProp);
-
-            /*
-             * 如果当前行动是自己或者是机器人，切换回合
-             * playerProp.roleType 1: 玩家, 2: 机器人, 3: 怪兽
-             */
-            if (environment.myRoleId === environment.actId || playerProp.roleType > 1) {
-                this._ecs.ui.sendSocketMsg({
-                    cmd: ACTION.NEXT_ROUND,
-                    data: {
-                        roundNum: environment.roundNum,
-                        actId: environment.actId
-                    }
-                }, time);
-            }
-        }
-    }
-
-    // 试炼模式切换回合是PROGRESS_NEXT_ROUND
-    progressNextRound(time = 0) {
-        const worldEntity = this._ecs.entityManager.first('World');
-        const environment = worldEntity.getComp(Components.Environment);
-
-        // 发送PROGRESS_NEXT_ROUND
-        this._ecs.ui.sendSocketMsg({
-            cmd: ACTION.PROGRESS_NEXT_ROUND,
-            data: {
-                roundNum: environment.roundNum
-            }
-        }, time);
-    }
-    /*
-     * 开火
-     * @param {object} data 数据
-     */
-    openFire(data) {
-        this._ecs.ui.sendSocketMsg({
-            cmd: ACTION.SHOOT,
-            data
-        });
-    }
-
     /*
      * 检查组件是否存在
      * @param {array} comp 组件名

@@ -21,20 +21,33 @@ cc.Class({
 
     // LIFE-CYCLE CALLBACKS:
 
-    onLoad () {
+    onLoad() {
         this.init();
 
         this.initEvent();
     },
 
-    start () {
-        console.log(this.keyCode.json);
+    start() {
+        ecs.send(Systems.BattleStartSystem, {
+            player: {
+                id: '20190724',
+                name: 'Milhous',
+                level: 1,
+                healthPoint: 100,
+                maxHealthPoint: 100,
+                model: 1,
+                position: {
+                    x: this.node.width / 2,
+                    y: 100
+                }
+            }
+        });
     },
 
-    update (dt) {
+    update(dt) {
         ecs.update(dt);
     },
-    
+
     // 初始化
     init() {
         // 初始化ecs
@@ -55,5 +68,45 @@ cc.Class({
                 y: vec.y
             });
         }, this);
+
+        this.panel.on(cc.Node.EventType.TOUCH_END, (evt) => {
+            const vec = evt.getLocation();
+
+            ecs.input.set(ecs.input.keyCode.MOVE, {
+                x: vec.x,
+                y: vec.y
+            });
+        }, this);
+    },
+
+    // 更新UI
+    updateUI(state = {}) {
+        for (const name in state) {
+            if (typeof this[name] === 'function') {
+                const data = state[name];
+
+                this[name](data);
+            }
+        }
+    },
+
+    // 创建玩家
+    createPlayer(data) {
+        const vec = cc.v2(data.x, data.y);
+        const position = this.node.convertToNodeSpaceAR(vec);
+
+        this.airplane.setPosition(position);
+
+        cc.log('createPlayer', data);
+    },
+
+    // 更新玩家
+    updatePlayer(data) {
+        const vec = cc.v2(data.x, data.y);
+        const position = this.node.convertToNodeSpaceAR(vec);
+
+        this.airplane.setPosition(position);
+
+        cc.log('updatePlayer', data, position);
     }
 });
