@@ -51,6 +51,8 @@ cc.Class({
                 }
             }
         });
+
+        console.log(cc.director.getWinSizeInPixels());
     },
 
     update(dt) {
@@ -109,7 +111,9 @@ cc.Class({
 
         this.airplane.setPosition(position);
 
-        cc.log('createPlayer', data);
+        // this.schedule(() => {
+             
+        // }, .2);
     },
 
     // 更新玩家
@@ -118,15 +122,10 @@ cc.Class({
         const position = this.node.convertToNodeSpaceAR(vec);
 
         this.airplane.setPosition(position);
-
-        cc.log('updatePlayer', data, position);
     },
 
     // 创建子弹
     createBullet(data) {
-        const node = cc.instantiate(this.target);
-
-        node.parent = scene;
-        node.setPosition(0, 0);
+        
     }
 });
