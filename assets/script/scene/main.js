@@ -1,6 +1,9 @@
 // System
 import Systems from '../game/systems.game.js';
 
+// 对象池管理器
+const PoolManager = require('Pool.manager');
+
 cc.Class({
     extends: cc.Component,
 
@@ -9,14 +12,20 @@ cc.Class({
             default: null,
             type: cc.JsonAsset,
         },
+        // 面板
         panel: {
             default: null,
             type: cc.Node
         },
+        // 飞机
         airplane: {
             default: null,
             type: cc.Node
-        }
+        },
+        bulletPool: {
+            default: null,
+            type: PoolManager
+        },
     },
 
     // LIFE-CYCLE CALLBACKS:
@@ -56,6 +65,9 @@ cc.Class({
             keyCode: this.keyCode.json,
             Systems
         });
+
+        // 初始化子弹对象池
+        this.bulletPool.init();
     },
 
     // 初始化事件
@@ -108,5 +120,13 @@ cc.Class({
         this.airplane.setPosition(position);
 
         cc.log('updatePlayer', data, position);
+    },
+
+    // 创建子弹
+    createBullet(data) {
+        const node = cc.instantiate(this.target);
+
+        node.parent = scene;
+        node.setPosition(0, 0);
     }
 });
