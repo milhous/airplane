@@ -18,7 +18,7 @@ cc.Class({
             type: cc.Node
         },
         // 飞机
-        airplane: {
+        player: {
             default: null,
             type: cc.Node
         },
@@ -81,7 +81,7 @@ cc.Class({
     // 开始游戏
     gameStart() {
         const screenSize = cc.winSize;
-        const playerSize = this.airplane.getContentSize();
+        const playerSize = this.player.getContentSize();
 
         ecs.send(Systems.BattleStartSystem, {
             world: {
@@ -121,7 +121,7 @@ cc.Class({
         const vec = cc.v2(data.x, data.y);
         const position = this.node.convertToNodeSpaceAR(vec);
 
-        this.airplane.setPosition(position);
+        this.player.setPosition(position);
 
         // this.schedule(() => {
              
@@ -133,7 +133,7 @@ cc.Class({
         const vec = cc.v2(data.x, data.y);
         const position = this.node.convertToNodeSpaceAR(vec);
 
-        this.airplane.setPosition(position);
+        this.player.setPosition(position);
     },
 
     // 创建子弹
