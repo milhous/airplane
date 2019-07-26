@@ -37,22 +37,7 @@ cc.Class({
     },
 
     start() {
-        ecs.send(Systems.BattleStartSystem, {
-            player: {
-                id: '20190724',
-                name: 'Milhous',
-                level: 1,
-                healthPoint: 100,
-                maxHealthPoint: 100,
-                model: 1,
-                position: {
-                    x: this.node.width / 2,
-                    y: 100
-                }
-            }
-        });
-
-        console.log(cc.director.getWinSizeInPixels());
+        this.gameStart();
     },
 
     update(dt) {
@@ -91,6 +76,33 @@ cc.Class({
                 y: vec.y
             });
         }, this);
+    },
+
+    // 开始游戏
+    gameStart() {
+        const screenSize = cc.winSize;
+        const playerSize = this.airplane.getContentSize();
+
+        ecs.send(Systems.BattleStartSystem, {
+            world: {
+                width: screenSize.width,
+                height: screenSize.height
+            },
+            player: {
+                id: '9527',
+                name: 'Milhous',
+                level: 1,
+                healthPoint: 100,
+                maxHealthPoint: 100,
+                model: 1,
+                width: playerSize.width,
+                height: playerSize.height,
+                position: {
+                    x: screenSize.width / 2,
+                    y: 100
+                }
+            }
+        });
     },
 
     // 更新UI

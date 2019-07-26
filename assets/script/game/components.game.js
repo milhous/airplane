@@ -20,6 +20,7 @@ import PlayerProp from 'components/PlayerProp.js';
 
 export default {
     Owner,
+    Shape,
     Position,
     Tween,
     Skin,

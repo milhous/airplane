@@ -33,24 +33,30 @@ export default class PlayerMovementSystem extends ecs.System {
             return;
         }
 
+        // 设置目标地点坐标
         if (data !== null && data.hasOwnProperty('x') && data.hasOwnProperty('y')) {
+            const playerShape = playerEntity.getComp(Components.Shape);
+
+            const { x, y } = this.boundaryDetection(data.x, data.y, playerShape.width, playerShape.height);
+
             playerEntity.setCompsState(Components.Tween, {
                 enabled: true,
-                x: data.x,
-                y: data.y
+                x,
+                y
             });
         }
 
+        // 向目标地点缓动
         const playerTween = playerEntity.getComp(Components.Tween);
 
         if (playerTween.enabled) {
             const playerPosition = playerEntity.getComp(Components.Position);
 
-            const result = this.tween(playerPosition, playerTween);
+            const { x, y } = this.tween(playerPosition, playerTween);
 
             playerEntity.setCompsState(Components.Position, {
-                x: result.x,
-                y: result.y
+                x,
+                y
             });
 
             if (playerPosition.x === playerTween.x && playerPosition.y === playerTween.y) {
@@ -60,6 +66,40 @@ export default class PlayerMovementSystem extends ecs.System {
                 });
             }
         }
+    }
+
+    /*
+     * 边界检测
+     * @param {number} x x轴偏移量
+     * @param {number} y y轴偏移量
+     * @param {number} width 宽度
+     * @param {number} height 高度
+     * @param {object} result
+     */ 
+    boundaryDetection(x, y, width, height) {
+        const worldEntity = this._ecs.entityManager.first('World');
+        const worldShape = worldEntity.getComp(Components.Shape);
+
+        if (x - width / 2 < 0) {
+            x = width / 2;
+        }
+
+        if (x + width / 2 > worldShape.width) {
+            x = worldShape.width - width / 2;
+        }
+
+        if (y - height / 2 < 0) {
+            y = height / 2;
+        }
+
+        if (y + height / 2 > worldShape.height) {
+            y = worldShape.height - height / 2;
+        }
+
+        return {
+            x,
+            y
+        };
     }
 
     /*

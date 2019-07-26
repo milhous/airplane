@@ -16,7 +16,27 @@ export default class BattleStartSystem extends ecs.System {
     onUpdate() {}
 
     onReceive(data) {
+        this.spawnWorldEntity(data.world);
+
         this.spawnPlayerEntity(data.player);
+    }
+
+    /*
+     * 组装世界实体
+     * @param {number} width 宽度
+     * @param {number} height 高度
+     */
+    spawnWorldEntity({
+        width,
+        height
+    }) {
+        const worldShape = new Components.Shape({
+            width,
+            height
+        });
+
+        const worldEntity = new ecs.Entity('World')
+            .addComp(worldShape);
     }
 
     /*
@@ -27,6 +47,8 @@ export default class BattleStartSystem extends ecs.System {
      * @param {number} healthPoint 当前血量
      * @param {number} maxHealthPoint 最大血量
      * @param {number} model 型号
+     * @param {number} width 宽度
+     * @param {number} height 高度
      * @param {object} position 位置
      */
     spawnPlayerEntity({
@@ -36,6 +58,8 @@ export default class BattleStartSystem extends ecs.System {
         healthPoint,
         maxHealthPoint,
         model,
+        width,
+        height,
         position,
     }) {
         const playerOwner = new Components.Owner(id, true);
@@ -46,12 +70,17 @@ export default class BattleStartSystem extends ecs.System {
             maxHealthPoint,
             model
         });
+        const playerShape = new Components.Shape({
+            width,
+            height
+        });
         const playerPosition = new Components.Position(position.x, position.y);
         const playerTween = new Components.Tween({ x: 0, y: 0 });
 
         const playerEntity = new ecs.Entity('Player')
             .addComp(playerOwner)
             .addComp(playerProp)
+            .addComp(playerShape)
             .addComp(playerPosition)
             .addComp(playerTween);
     }
