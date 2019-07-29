@@ -17,11 +17,12 @@ export default class OpenFireSystem extends ecs.System {
     onUpdate() { }
 
     /*
-     * @param {object} data 炮弹数据
-     * @param {string} type 炮弹类型
+     * @param {object} data 火力数据
      */
     onReceive(data) {
-        
+        for(const item of data.firepowers) {
+            this.spawnAmmoEntity(item);
+        }
     }
 
     /*
@@ -29,21 +30,30 @@ export default class OpenFireSystem extends ecs.System {
      * @param {string} id ID
      * @param {number} damage 伤害
      * @param {number} model 型号
-     * @param {object} position 位置
+     * @param {number} x x轴位置
+     * @param {number} y y轴位置
      */
     spawnAmmoEntity({
         id,
-        damage,
+        damage = 0,
         model,
-        position
+        x,
+        y
     }) {
+        const worldEntity = this._ecs.entityManager.first('World');
+        const worldShape = worldEntity.getComp(Components.Shape);
+
         const ammoOwner = new Components.Owner(id, true);
-        const ammoProp = new Components.ammoProp({
+        const ammoProp = new Components.AmmoProp({
             damage,
             model
         });
-        const ammoPosition = new Components.Position(position.x, position.y);
-        const ammoTween = new Components.Tween({ x: 0, y: 0 });
+        const ammoPosition = new Components.Position(x, y);
+        const ammoTween = new Components.Tween({ 
+            x,
+            y: worldShape.height,
+            enabled: true
+        });
 
         const ammoEntity = new ecs.Entity('Ammo')
             .addComp(ammoOwner)

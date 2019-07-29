@@ -13,8 +13,10 @@ import PlayerMovementSystem from 'systems/player-movement.system.js';
 /*
  * 火力相关系统
  * OpenFireSystem - 开火
+ * AmmoMovementSystem - 弹药移动
  */
 import OpenFireSystem from 'systems/open-fire.system.js';
+import AmmoMovementSystem from 'systems/ammo-movement.system.js';
 
 /*
  * 渲染相关系统
@@ -26,5 +28,6 @@ export default {
     BattleStartSystem,
     PlayerMovementSystem,
     OpenFireSystem,
+    AmmoMovementSystem,
     RenderSystem
 };

@@ -28,10 +28,19 @@ cc.Class({
         },
     },
 
+    ctor() {
+        // 玩家组件
+        this._playerComp = null;
+        // 弹药
+        this._ammoMap = new Map();
+    },
+
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
         this.init();
+
+        this.initComponent();
 
         this.initEvent();
     },
@@ -55,6 +64,12 @@ cc.Class({
 
         // 初始化子弹对象池
         this.bulletPool.init();
+    },
+
+    // 初始化组件
+    initComponent() {
+        // 玩家
+        this._playerComp = this.player.getComponent('Player');
     },
 
     // 初始化事件
@@ -97,11 +112,18 @@ cc.Class({
                 model: 1,
                 width: playerSize.width,
                 height: playerSize.height,
-                position: {
-                    x: screenSize.width / 2,
-                    y: 100
-                }
+                x: screenSize.width / 2,
+                y: 100
             }
+        });
+    },
+
+    // 开火
+    openFire() {
+        const firepowers = this._playerComp.getFirepowerInfo(1);
+
+        ecs.send(Systems.OpenFireSystem, {
+            firepowers
         });
     },
 
@@ -118,14 +140,20 @@ cc.Class({
 
     // 创建玩家
     createPlayer(data) {
-        const vec = cc.v2(data.x, data.y);
+        const { id, name, x, y } = data;
+        const vec = cc.v2(x, y);
         const position = this.node.convertToNodeSpaceAR(vec);
+
+        this._playerComp.setBasicInfo({
+            id,
+            name
+        });
 
         this.player.setPosition(position);
 
-        // this.schedule(() => {
-             
-        // }, .2);
+        this.schedule(() => {
+            this.openFire();
+        }, .2);
     },
 
     // 更新玩家
@@ -136,8 +164,40 @@ cc.Class({
         this.player.setPosition(position);
     },
 
-    // 创建子弹
-    createBullet(data) {
-        
-    }
+    // 创建弹药
+    createAmmo(data) {
+        const vec = cc.v2(data.x, data.y);
+        const position = this.node.convertToNodeSpaceAR(vec);
+
+        const ammo = this.bulletPool.request();
+        ammo.setPosition(position);
+        ammo.parent = this.node;
+
+        this._ammoMap.set(data.eid, ammo);
+    },
+
+
+    // 更新弹药
+    updateAmmo(data) {
+        if (!this._ammoMap.has(data.eid)) {
+            return;
+        }
+
+        const vec = cc.v2(data.x, data.y);
+        const position = this.node.convertToNodeSpaceAR(vec);
+
+        const ammo = this._ammoMap.get(data.eid);
+        ammo.setPosition(position);
+    },
+
+    // 销毁弹药
+    destroyAmmo(data) {
+        if (!this._ammoMap.has(data.eid)) {
+            return;
+        }
+
+        const ammo = this._ammoMap.get(data.eid);
+
+        this.bulletPool.recover(ammo);
+    },
 });

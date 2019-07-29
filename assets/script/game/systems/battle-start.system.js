@@ -49,7 +49,8 @@ export default class BattleStartSystem extends ecs.System {
      * @param {number} model 型号
      * @param {number} width 宽度
      * @param {number} height 高度
-     * @param {object} position 位置
+     * @param {number} x x轴位置
+     * @param {number} y y轴位置
      */
     spawnPlayerEntity({
         id,
@@ -60,7 +61,8 @@ export default class BattleStartSystem extends ecs.System {
         model,
         width,
         height,
-        position,
+        x,
+        y
     }) {
         const playerOwner = new Components.Owner(id, true);
         const playerProp = new Components.PlayerProp({
@@ -74,7 +76,7 @@ export default class BattleStartSystem extends ecs.System {
             width,
             height
         });
-        const playerPosition = new Components.Position(position.x, position.y);
+        const playerPosition = new Components.Position(x, y);
         const playerTween = new Components.Tween({ x: 0, y: 0 });
 
         const playerEntity = new ecs.Entity('Player')

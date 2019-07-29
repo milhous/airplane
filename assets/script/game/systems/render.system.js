@@ -132,4 +132,12 @@ export default class RenderSystem extends ecs.System {
     updatePlayerUI(entitys) {
         render.player(this._ecs, this, entitys);
     }
+
+    /*
+     * 更新ammo状态
+     * @param {object} entitys 实体集合
+     */
+    updateAmmoUI(entitys) {
+        render.ammo(this._ecs, this, entitys);
+    }
 }
