@@ -22,10 +22,16 @@ cc.Class({
             default: null,
             type: cc.Node
         },
+        // 敌人对象池
+        enemyPool: {
+            default: [],
+            type: [PoolManager]
+        },
+        // 弹药对象池
         bulletPool: {
             default: null,
             type: PoolManager
-        },
+        }
     },
 
     ctor() {
@@ -113,7 +119,8 @@ cc.Class({
                 width: playerSize.width,
                 height: playerSize.height,
                 x: screenSize.width / 2,
-                y: 100
+                y: 100,
+                speed: 10
             }
         });
     },

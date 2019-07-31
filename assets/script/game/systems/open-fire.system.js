@@ -32,13 +32,15 @@ export default class OpenFireSystem extends ecs.System {
      * @param {number} model 型号
      * @param {number} x x轴位置
      * @param {number} y y轴位置
+     * @param {number} speed 移动速度
      */
     spawnAmmoEntity({
         id,
         damage = 0,
         model,
         x,
-        y
+        y,
+        speed
     }) {
         const worldEntity = this._ecs.entityManager.first('World');
         const worldShape = worldEntity.getComp(Components.Shape);
@@ -52,7 +54,8 @@ export default class OpenFireSystem extends ecs.System {
         const ammoTween = new Components.Tween({ 
             x,
             y: worldShape.height,
-            enabled: true
+            enabled: true,
+            speed
         });
 
         const ammoEntity = new ecs.Entity('Ammo')

@@ -1149,10 +1149,22 @@
     "player": {
       "__id__": 14
     },
+    "enemyPool": [
+      {
+        "__id__": 27
+      }
+    ],
     "bulletPool": {
-      "__id__": 27
+      "__id__": 28
     },
     "_id": "28IpsIhNpM64jAcZ+9s1dQ"
+  },
+  {
+    "__type__": "PoolManager",
+    "prefab": {
+      "__uuid__": "3a25a431-6c0a-4c82-bf47-fc6bb598127d"
+    },
+    "size": 50
   },
   {
     "__type__": "PoolManager",

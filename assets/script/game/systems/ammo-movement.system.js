@@ -36,7 +36,7 @@ export default class AmmoMovementSystem extends ecs.System {
             if (ammoTween.enabled) {
                 const ammoPosition = ammoEntity.getComp(Components.Position);
 
-                const { x, y } = common.tween(ammoPosition, ammoTween);
+                const { x, y } = common.tween(ammoPosition, ammoTween, ammoTween.speed);
 
                 ammoEntity.setCompsState(Components.Position, {
                     x,

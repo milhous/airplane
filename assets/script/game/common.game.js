@@ -41,9 +41,10 @@ export function boundaryDetection(x, y, width, height) {
  * 缓动（每帧移动一段距离）
  * @param {object} startPoint 起点
  * @param {object} endPoint 终点
+ * @param {number} speed 速度
  * @return {object} result 
  */
-export function tween(startPoint, endPoint) {
+export function tween(startPoint, endPoint, speed) {
     const startX = startPoint.x;
     const startY = startPoint.y;
     const endX = endPoint.x;
@@ -53,8 +54,8 @@ export function tween(startPoint, endPoint) {
     let y = 0;
 
     // 缓动效果
-    const offsetX = endX - startX > 0 ? 20 : -20;
-    const offsetY = endY - startY > 0 ? 20 : -20;
+    const offsetX = endX - startX > 0 ? speed : -speed;
+    const offsetY = endY - startY > 0 ? speed : -speed;
 
     x += startX + offsetX;
     y += startY + offsetY;

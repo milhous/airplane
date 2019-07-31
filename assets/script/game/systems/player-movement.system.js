@@ -55,7 +55,7 @@ export default class PlayerMovementSystem extends ecs.System {
         if (playerTween.enabled) {
             const playerPosition = playerEntity.getComp(Components.Position);
 
-            const { x, y } = common.tween(playerPosition, playerTween);
+            const { x, y } = common.tween(playerPosition, playerTween, playerTween.speed);
 
             playerEntity.setCompsState(Components.Position, {
                 x,

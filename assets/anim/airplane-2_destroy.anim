@@ -1,0 +1,55 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "airplane-2_destroy",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 1.6833333333333333,
+  "sample": 60,
+  "speed": 2,
+  "wrapMode": 1,
+  "curveData": {
+    "comps": {
+      "cc.Sprite": {
+        "spriteFrame": [
+          {
+            "frame": 0,
+            "value": {
+              "__uuid__": "5a9f8e7e-1dc8-4b75-95fa-c87be3fe7c64"
+            }
+          },
+          {
+            "frame": 0.3333333333333333,
+            "value": {
+              "__uuid__": "ac37ebf4-3261-42e0-8349-9bb2be7c7dda"
+            }
+          },
+          {
+            "frame": 0.6666666666666666,
+            "value": {
+              "__uuid__": "ac80f9d3-4b32-4acc-8b52-3d5b5cdc52f4"
+            }
+          },
+          {
+            "frame": 1,
+            "value": {
+              "__uuid__": "f42f4f40-f37a-4b99-ba6d-e6fb96c52fd8"
+            }
+          },
+          {
+            "frame": 1.3333333333333333,
+            "value": {
+              "__uuid__": "45bd1862-bd6b-48ba-915e-c09cd1fcb5b7"
+            }
+          },
+          {
+            "frame": 1.6666666666666667,
+            "value": {
+              "__uuid__": "25d6e970-3645-425a-9f2c-85965f42bca8"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "events": []
+}
