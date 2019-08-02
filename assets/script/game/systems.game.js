@@ -10,6 +10,13 @@ import BattleStartSystem from 'systems/battle-start.system.js';
  */ 
 import PlayerMovementSystem from 'systems/player-movement.system.js';
 
+
+/*
+ * 敌方相关系统
+ * EnemySpawnSystem - 组装
+ */ 
+import EnemySpawnSystem from 'systems/enemy-spawn.system.js';
+
 /*
  * 火力相关系统
  * OpenFireSystem - 开火
@@ -27,6 +34,7 @@ import RenderSystem from 'systems/render.system.js';
 export default {
     BattleStartSystem,
     PlayerMovementSystem,
+    EnemySpawnSystem,
     OpenFireSystem,
     AmmoMovementSystem,
     RenderSystem

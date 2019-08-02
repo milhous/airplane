@@ -46,8 +46,9 @@ export default class OpenFireSystem extends ecs.System {
         const worldShape = worldEntity.getComp(Components.Shape);
 
         const ammoOwner = new Components.Owner(id, true);
-        const ammoProp = new Components.AmmoProp({
-            damage,
+        const ammoProp = new Components.BasicsProp({
+            healthPoint: damage,
+            maxHealthPoint: damage,
             model
         });
         const ammoPosition = new Components.Position(x, y);

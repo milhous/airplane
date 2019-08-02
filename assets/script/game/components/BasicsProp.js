@@ -1,7 +1,7 @@
-// 玩家属性
-export default class PlayerProp extends ecs.Component {
+// 弹药属性
+export default class BasicsProp extends ecs.Component {
     static get name() {
-        return 'PlayerProp';
+        return 'BasicsProp';
     }
 
     /*
@@ -10,7 +10,7 @@ export default class PlayerProp extends ecs.Component {
      * @param {number} healthPoint 当前血量
      * @param {number} maxHealthPoint 最大血量
      * @param {number} model 型号
-	 */
+     */
     constructor({
         name = '',
         level = 1,

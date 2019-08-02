@@ -14,14 +14,14 @@ export default function renderPlayer(ecs, render, entitys) {
         }
 
         const playerOwner = entity.getComp(Components.Owner);
-        const playerProp = entity.getComp(Components.PlayerProp);
+        const playerProp = entity.getComp(Components.BasicsProp);
         const playerPosition = entity.getComp(Components.Position);
         const playerTween = entity.getComp(Components.Tween);
 
         const state = {};
 
         // 创建
-        if (render.hasComps(['Owner', 'PlayerProp', 'Position', 'Tween'], comps)) {
+        if (render.hasComps(['Owner', 'BasicsProp', 'Position', 'Tween'], comps)) {
             if (playerOwner.enabled) {
                 Object.assign(state, {
                     createPlayer: {

@@ -55,19 +55,7 @@ export default class RenderSystem extends ecs.System {
         }
     }
 
-    onReceive({
-        time
-    }) {
-        // 跳过回合
-        const worldEntity = this._ecs.entityManager.first('World');
-        const environment = worldEntity.getComp(Components.Environment);
-        // 试炼模式切回合发送的是progressNextRound
-        if(environment.gameMode == 'courage'){
-            this.progressNextRound(time);
-        }else{
-            this.nextRound(time);
-        }
-    }
+    onReceive(data) {}
 
     /*
      * 检查组件是否存在

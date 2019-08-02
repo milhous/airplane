@@ -14,11 +14,9 @@ import Skin from 'components/Skin.js';
 
 /*
  * 属性相关组件
- * PlayerProp - 玩家
- * AmmoProp - 军火
+ * BasicsProp - 基础
  */
-import PlayerProp from 'components/PlayerProp.js';
-import AmmoProp from 'components/AmmoProp.js';
+import BasicsProp from 'components/BasicsProp.js';
 
 export default {
     Owner,
@@ -26,6 +24,5 @@ export default {
     Position,
     Tween,
     Skin,
-    PlayerProp,
-    AmmoProp
+    BasicsProp
 };

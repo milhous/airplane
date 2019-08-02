@@ -30,7 +30,7 @@ export default class PlayerMovementSystem extends ecs.System {
      * @param {object} data 数据
      */
     move(data) {
-        const playerEntity = this._ecs.entityManager.find('Player', Components.PlayerProp, { 'name': 'Milhous' });
+        const playerEntity = this._ecs.entityManager.find('Player', Components.BasicsProp, { 'name': 'Milhous' });
 
         if (!playerEntity) {
             return;

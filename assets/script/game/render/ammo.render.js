@@ -14,14 +14,14 @@ export default function renderAmmo(ecs, render, entitys) {
         }
 
         const ammoOwner = entity.getComp(Components.Owner);
-        const ammoProp = entity.getComp(Components.AmmoProp);
+        const ammoProp = entity.getComp(Components.BasicsProp);
         const ammoPosition = entity.getComp(Components.Position);
         const ammoTween = entity.getComp(Components.Tween);
 
         const state = {};
 
         // 创建
-        if (render.hasComps(['Owner', 'AmmoProp', 'Position', 'Tween'], comps)) {
+        if (render.hasComps(['Owner', 'BasicsProp', 'Position', 'Tween'], comps)) {
             if (ammoOwner.enabled) {
                 Object.assign(state, {
                     createAmmo: {

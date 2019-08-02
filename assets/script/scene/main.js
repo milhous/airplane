@@ -134,6 +134,11 @@ cc.Class({
         });
     },
 
+    // 敌军
+    enemyFactory() {
+
+    },
+
     // 更新UI
     updateUI(state = {}) {
         for (const name in state) {
@@ -148,36 +153,34 @@ cc.Class({
     // 创建玩家
     createPlayer(data) {
         const { id, name, x, y } = data;
-        const vec = cc.v2(x, y);
-        const position = this.node.convertToNodeSpaceAR(vec);
+        const vec = this.convertCoordinate(data.x, data.y);
 
         this._playerComp.setBasicInfo({
             id,
             name
         });
 
-        this.player.setPosition(position);
+        this.player.setPosition(vec);
 
         this.schedule(() => {
             this.openFire();
+
+            this.enemyFactory();
         }, .2);
     },
 
     // 更新玩家
     updatePlayer(data) {
-        const vec = cc.v2(data.x, data.y);
-        const position = this.node.convertToNodeSpaceAR(vec);
+        const vec = this.convertCoordinate(data.x, data.y);
 
-        this.player.setPosition(position);
+        this.player.setPosition(vec);
     },
 
     // 创建弹药
     createAmmo(data) {
-        const vec = cc.v2(data.x, data.y);
-        const position = this.node.convertToNodeSpaceAR(vec);
-
+        const vec = this.convertCoordinate(data.x, data.y);
         const ammo = this.bulletPool.request();
-        ammo.setPosition(position);
+        ammo.setPosition(vec);
         ammo.parent = this.node;
 
         this._ammoMap.set(data.eid, ammo);
@@ -190,11 +193,9 @@ cc.Class({
             return;
         }
 
-        const vec = cc.v2(data.x, data.y);
-        const position = this.node.convertToNodeSpaceAR(vec);
-
+        const vec = this.convertCoordinate(data.x, data.y);
         const ammo = this._ammoMap.get(data.eid);
-        ammo.setPosition(position);
+        ammo.setPosition(vec);
     },
 
     // 销毁弹药
@@ -207,4 +208,17 @@ cc.Class({
 
         this.bulletPool.recover(ammo);
     },
+
+    /*
+     * 转换坐标
+     * @param {number} x x轴坐标
+     * @param {number} y y轴坐标
+     * @return {object} result
+     */ 
+    convertCoordinate(x, y) {
+        const vec = cc.v2(x, y);
+        const position = this.node.convertToNodeSpaceAR(vec);
+
+        return position;
+    }
 });
