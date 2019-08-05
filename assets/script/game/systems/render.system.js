@@ -128,4 +128,12 @@ export default class RenderSystem extends ecs.System {
     updateAmmoUI(entitys) {
         render.ammo(this._ecs, this, entitys);
     }
+
+    /*
+     * 更新enemy状态
+     * @param {object} entitys 实体集合
+     */
+    updateEnemyUI(entitys) {
+        render.enemy(this._ecs, this, entitys);
+    }
 }

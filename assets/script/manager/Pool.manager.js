@@ -74,6 +74,17 @@ const PoolManager = cc.Class({
         }
 
         this._list.clear();
+    },
+
+    // 获取预制资源尺寸
+    getSize() {
+        if (this.prefab === null) {
+            return;
+        }
+
+        const node = this.prefab.data;
+
+        return node.getContentSize();
     }
 });
 

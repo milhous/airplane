@@ -82,7 +82,7 @@ export default class BattleStartSystem extends ecs.System {
         const playerTween = new Components.Tween({ 
             x: 0,
             y: 0,
-            speed: 20
+            speed
         });
 
         const playerEntity = new ecs.Entity('Player')

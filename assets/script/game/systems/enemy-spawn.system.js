@@ -19,7 +19,7 @@ export default class EnemySpawnSystem extends ecs.System {
     onUpdate() {}
 
     onReceive(data) {
-
+        this.spawnEnemyEntity(data);
     }
 
     /*
@@ -47,30 +47,34 @@ export default class EnemySpawnSystem extends ecs.System {
         y,
         speed
     }) {
-        const playerOwner = new Components.Owner(id, true);
-        const playerProp = new Components.PlayerProp({
+        const worldEntity = this._ecs.entityManager.first('World');
+        const worldShape = worldEntity.getComp(Components.Shape);
+
+        const enemyOwner = new Components.Owner(id, true);
+        const enemyProp = new Components.BasicsProp({
             name,
             level,
             healthPoint,
             maxHealthPoint,
             model
         });
-        const playerShape = new Components.Shape({
+        const enemyShape = new Components.Shape({
             width,
             height
         });
-        const playerPosition = new Components.Position(x, y);
-        const playerTween = new Components.Tween({ 
-            x: 0,
-            y: 0,
-            speed: 20
+        const enemyPosition = new Components.Position(x, y);
+        const enemyTween = new Components.Tween({ 
+            x,
+            y: -height,
+            enabled: true,
+            speed
         });
 
-        const playerEntity = new ecs.Entity('Player')
-            .addComp(playerOwner)
-            .addComp(playerProp)
-            .addComp(playerShape)
-            .addComp(playerPosition)
-            .addComp(playerTween);
+        const enemyEntity = new ecs.Entity('Enemy')
+            .addComp(enemyOwner)
+            .addComp(enemyProp)
+            .addComp(enemyShape)
+            .addComp(enemyPosition)
+            .addComp(enemyTween);
     }
 }

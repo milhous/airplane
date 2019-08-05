@@ -59,8 +59,7 @@ cc.Class({
             model: 0,
             x: pos.x,
             y: pos.y,
-            id: this._uid,
-            speed: 30
+            id: this._uid
         });
 
         if (type > 0) {
@@ -71,8 +70,7 @@ cc.Class({
                     model: 1,
                     x: pos.x,
                     y: pos.y,
-                    id: this._uid,
-                    speed: 30
+                    id: this._uid
                 });
             }
         }
