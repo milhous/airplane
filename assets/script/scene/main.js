@@ -226,6 +226,9 @@ cc.Class({
         enemy.setPosition(vec);
         enemy.parent = this.node;
 
+        const animation = enemy.getComponent(cc.Animation);
+        animation.play();
+
         this._enemyMap.set(data.eid, enemy);
     },
 
@@ -248,7 +251,11 @@ cc.Class({
 
         const enemy = this._enemyMap.get(data.eid);
 
-        this.enemyPools[0].recover(enemy);
+        const animation = enemy.getComponent(cc.Animation);
+        animation.play('airplane-2_destroy');
+        animation.once('finished', () => {
+            this.enemyPools[0].recover(enemy);
+        }, this);
     },
 
     // 创建弹药
