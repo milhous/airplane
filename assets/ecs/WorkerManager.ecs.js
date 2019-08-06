@@ -4,8 +4,8 @@ export class WorkerManager {
         // ecs
         this._ecs = ecs;
 
-        // worker构建函数集合
-        this._WorkerMap = new Map();
+        // worker blob集合
+        this._blobsMap = new Map();
         // worker对象集合
         this._workerMap = new Map();
     }
@@ -28,18 +28,18 @@ export class WorkerManager {
     /*
      * 注册
      * @param (string) name 名称
-     * @param (function) worker 构造函数
+     * @param (string) blob worker blob文件
      */
-    register(name, worker) {
+    register(name, blob) {
         if (this._preRegister(name)) {
             return this;
         }
 
-        const Workers = [...this._WorkerMap];
+        const blobs = [...this._blobsMap];
 
-        Workers.push([name, worker]);
+        blobs.push([name, blob]);
 
-        this._WorkerMap = new Map(Workers);
+        this._blobsMap = new Map(blobs);
     }
 
     /*
@@ -53,9 +53,11 @@ export class WorkerManager {
             return;
         }
 
-        const Worker = this._WorkerMap.get(name);
+        const blob = this._blobsMap.get(name);
 
-        if (Worker === undefined) {
+        console.log('worker', blob);
+
+        if (blob === undefined) {
             return;
         }
 
@@ -65,7 +67,7 @@ export class WorkerManager {
             return;
         }
 
-        const worker = new Worker();
+        const worker = new Worker(blob);
         const listener = new Map();
 
         listener.set(cmd, [fun]);

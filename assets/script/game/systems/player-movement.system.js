@@ -13,7 +13,17 @@ export default class PlayerMovementSystem extends ecs.System {
         super();
     }
 
-    onLoad() {}
+    onLoad() {
+        // 边界检测
+        this._ecs.workerManager.open('Math', 'boundaryDetection', (data) => {
+            this.boundaryDetection(data);
+        });
+
+        // 缓动
+        this._ecs.workerManager.open('Math', 'tween', (data) => {
+            this.move(data);
+        });
+    }
 
     onUpdate(dt) {
         let data = null;
@@ -22,14 +32,14 @@ export default class PlayerMovementSystem extends ecs.System {
             data = this._ecs.input.get(this._ecs.input.keyCode.MOVE);
         }
 
-        this.move(data);
+        this.updateEntity(data);
     }
 
     /*
-     * 移动
+     * 更新
      * @param {object} data 数据
      */
-    move(data) {
+    updateEntity(data) {
         const playerEntity = this._ecs.entityManager.find('Player', Components.BasicsProp, { 'name': 'EVANGELION' });
 
         if (!playerEntity) {
@@ -38,14 +48,30 @@ export default class PlayerMovementSystem extends ecs.System {
 
         // 设置目标地点坐标
         if (data !== null && data.hasOwnProperty('x') && data.hasOwnProperty('y')) {
+            const worldEntity = ecs.entityManager.first('World');
+            const worldShape = worldEntity.getComp(Components.Shape);
             const playerShape = playerEntity.getComp(Components.Shape);
 
-            const { x, y } = common.boundaryDetection(data.x, data.y, playerShape.width, playerShape.height);
+            const position = {
+                x: data.x,
+                y: data.y
+            };
+            const maxSize = {
+                width: worldShape.width,
+                height: worldShape.height
+            };
+            const originSize = { 
+                width: playerShape.width,
+                height: playerShape.height
+            };
 
-            playerEntity.setCompsState(Components.Tween, {
-                enabled: true,
-                x,
-                y
+            this._ecs.workerManager.send('Math', {
+                cmd: 'boundaryDetection',
+                preload: {
+                    position,
+                    originSize,
+                    maxSize
+                }
             });
         }
 
@@ -54,20 +80,75 @@ export default class PlayerMovementSystem extends ecs.System {
 
         if (playerTween.enabled) {
             const playerPosition = playerEntity.getComp(Components.Position);
+            const start = {
+                x: playerPosition.x,
+                y: playerPosition.y
+            };
+            const end = {
+                x: playerTween.x,
+                y: playerTween.y
+            };
+            const speed = playerTween.speed;
 
-            const { x, y } = common.tween(playerPosition, playerTween, playerTween.speed);
-
-            playerEntity.setCompsState(Components.Position, {
-                x,
-                y
+            this._ecs.workerManager.send('Math', {
+                cmd: 'tween',
+                preload: {
+                    start,
+                    end,
+                    speed
+                }
             });
+        }
+    }
 
-            if (playerPosition.x === playerTween.x && playerPosition.y === playerTween.y) {
-                // 更新玩家缓动
-                playerEntity.setCompsState(Components.Tween, {
-                    enabled: false
-                });
-            }
+    /*
+     * 边界检测
+     * @param {object} data 数据
+     */
+    boundaryDetection({
+        x,
+        y
+    }) {
+        const playerEntity = this._ecs.entityManager.find('Player', Components.BasicsProp, { 'name': 'EVANGELION' });
+
+        if (!playerEntity) {
+            return;
+        }
+
+        playerEntity.setCompsState(Components.Tween, {
+            enabled: true,
+            x,
+            y
+        });
+    }
+
+    /*
+     * 移动
+     * @param {object} data 数据
+     */
+    move({
+        x,
+        y
+    }) {
+        const playerEntity = this._ecs.entityManager.find('Player', Components.BasicsProp, { 'name': 'EVANGELION' });
+
+        if (!playerEntity) {
+            return;
+        }
+
+        const playerPosition = playerEntity.getComp(Components.Position);
+        const playerTween = playerEntity.getComp(Components.Tween);
+
+        playerEntity.setCompsState(Components.Position, {
+            x,
+            y
+        });
+
+        if (playerPosition.x === playerTween.x && playerPosition.y === playerTween.y) {
+            // 更新玩家缓动
+            playerEntity.setCompsState(Components.Tween, {
+                enabled: false
+            });
         }
     }
 }

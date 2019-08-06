@@ -1,5 +1,7 @@
 // System
 import Systems from '../game/systems.game.js';
+// Worker
+import Workers from '../game/workers.game.js';
 
 // 对象池管理器
 const PoolManager = require('Pool.manager');
@@ -77,7 +79,8 @@ cc.Class({
         ecs.init({
             ui: this,
             keyCode: this.keyCode.json,
-            Systems
+            Systems,
+            Workers
         });
 
         // 初始化子弹对象池

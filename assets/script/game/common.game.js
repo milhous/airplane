@@ -4,40 +4,6 @@ import Systems from 'systems.game.js';
 import Components from 'components.game.js';
 
 /*
- * 边界检测
- * @param {number} x x轴偏移量
- * @param {number} y y轴偏移量
- * @param {number} width 宽度
- * @param {number} height 高度
- * @param {object} result
- */
-export function boundaryDetection(x, y, width, height) {
-    const worldEntity = ecs.entityManager.first('World');
-    const worldShape = worldEntity.getComp(Components.Shape);
-
-    if (x - width / 2 < 0) {
-        x = width / 2;
-    }
-
-    if (x + width / 2 > worldShape.width) {
-        x = worldShape.width - width / 2;
-    }
-
-    if (y - height / 2 < 0) {
-        y = height / 2;
-    }
-
-    if (y + height / 2 > worldShape.height) {
-        y = worldShape.height - height / 2;
-    }
-
-    return {
-        x,
-        y
-    };
-};
-
-/*
  * 缓动（每帧移动一段距离）
  * @param {object} startPoint 起点
  * @param {object} endPoint 终点
