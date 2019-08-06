@@ -1,7 +1,7 @@
 // Systems
-import Systems from 'systems.game.js';
+import Systems from '../game/systems.game.js';
 // Components
-import Components from 'components.game.js';
+import Components from '../game/components.game.js';
 
 /*
  * 缓动（每帧移动一段距离）

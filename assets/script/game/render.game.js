@@ -4,9 +4,9 @@
  * renderAmmo - 弹药
  * renderEnemy - 敌方
  */
-import renderPlayer from 'render/player.render.js';
-import renderAmmo from 'render/ammo.render.js';
-import renderEnemy from 'render/enemy.render.js';
+import renderPlayer from '../game/render/player.render.js';
+import renderAmmo from '../game/render/ammo.render.js';
+import renderEnemy from '../game/render/enemy.render.js';
 
 export default {
     player: renderPlayer,

@@ -1,5 +1,5 @@
 // System
-import Systems from '../game/systems.game.js';
+import Systems from '../game/systems.game';
 // Worker
 import Workers from '../game/workers.game.js';
 
