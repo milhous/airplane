@@ -44,3 +44,12 @@ export function move({
         }
     }
 };
+
+/*
+ * 获取指定范围随机整数
+ * @param {number} min 最小值
+ * @param {number} max 最大值
+ */
+export function random(min, max) {
+    return Math.round(Math.random() * (max - min)) === 0? (min+1):Math.round(Math.random() * (max - min)) + min;
+};

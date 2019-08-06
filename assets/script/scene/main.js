@@ -165,9 +165,6 @@ cc.Class({
     enemyFactory() {
         const screenSize = cc.winSize;
         const enemySize = this.enemyPools[0].getSize();
-        const speed = this.random(this._basic.ENEMY_MIN_SPEED, this._basic.ENEMY_MAX_SPEED);
-        const x = this.random(0, Math.floor(screenSize.width - enemySize.width));
-        const y = screenSize.height;
 
         ecs.send(Systems.EnemySpawnSystem, {
             id: '0',
@@ -178,9 +175,8 @@ cc.Class({
             model: 1,
             width: enemySize.width,
             height: enemySize.height,
-            x,
-            y,
-            speed
+            minSpeed: this._basic.ENEMY_MIN_SPEED,
+            maxSpeed: this._basic.ENEMY_MAX_SPEED
         });
     },
 
@@ -298,12 +294,5 @@ cc.Class({
         const position = this.node.convertToNodeSpaceAR(vec);
 
         return position;
-    },
-
-    /*
-     * 获取指定范围随机整数
-     */
-    random(min, max) {
-        return Math.round(Math.random() * (max - min)) === 0? (min+1):Math.round(Math.random() * (max - min)) + min;
     }
 });

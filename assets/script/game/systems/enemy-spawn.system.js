@@ -31,9 +31,8 @@ export default class EnemySpawnSystem extends ecs.System {
      * @param {number} model 型号
      * @param {number} width 宽度
      * @param {number} height 高度
-     * @param {number} x x轴位置
-     * @param {number} y y轴位置
-     * @param {number} speed 移动速度
+     * @param {number} minSpeed 最小移动速度
+     * @param {number} maxSpeed 最大移动速度
      */
     spawnEnemyEntity({
         id,
@@ -44,12 +43,15 @@ export default class EnemySpawnSystem extends ecs.System {
         model,
         width,
         height,
-        x,
-        y,
-        speed
+        minSpeed,
+        maxSpeed
     }) {
         const worldEntity = this._ecs.entityManager.first('World');
         const worldShape = worldEntity.getComp(Components.Shape);
+
+        const speed = common.random(minSpeed, maxSpeed);
+        const x = common.random(width, Math.floor(worldShape.width - width));
+        const y = worldShape.height;
 
         const enemyOwner = new Components.Owner(id, true);
         const enemyProp = new Components.BasicsProp({
