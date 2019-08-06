@@ -79,6 +79,9 @@ const script = `
                 const { start, end, speed } = data.preload;
 
                 result = tween(start, end, speed);
+                
+                result.eid = data.preload.eid;
+                result.ename = data.preload.ename;
 
                 postMessage({
                     cmd: 'tween',
@@ -90,6 +93,9 @@ const script = `
                 const { position, originSize, maxSize } = data.preload;
                 
                 result = boundaryDetection(position, originSize, maxSize);
+
+                result.eid = data.preload.eid;
+                result.ename = data.preload.ename;
 
                 postMessage({
                     cmd: 'boundaryDetection',

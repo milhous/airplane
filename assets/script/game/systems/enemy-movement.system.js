@@ -13,17 +13,29 @@ export default class EnemyMovementSystem extends ecs.System {
     }
 
     onLoad() {
+        // 缓动
+        this._ecs.workerManager.open('Math', 'tween', (data) => {
+            if (data.ename !== 'Enemy') {
+                return;
+            }
 
+            data.isDestroy = true;
+
+            common.move(data);
+        });
     }
 
     onUpdate() {
-        this.move();
+        this.updateEntity();
     }
 
     onReceive(data) {}
 
-    // 移动
-    move() {
+    /*
+     * 更新
+     * @param {object} data 数据
+     */
+    updateEntity() {
         const enemyMap = this._ecs.entityManager.getMap('Enemy');
 
         if (!enemyMap || enemyMap.size === 0) {
@@ -36,22 +48,26 @@ export default class EnemyMovementSystem extends ecs.System {
             if (enemyTween.enabled) {
                 const enemyPosition = enemyEntity.getComp(Components.Position);
 
-                const { x, y } = common.tween(enemyPosition, enemyTween, enemyTween.speed);
+                const start = {
+                    x: enemyPosition.x,
+                    y: enemyPosition.y
+                };
+                const end = {
+                    x: enemyTween.x,
+                    y: enemyTween.y
+                };
+                const speed = enemyTween.speed;
 
-                enemyEntity.setCompsState(Components.Position, {
-                    x,
-                    y
+                this._ecs.workerManager.send('Math', {
+                    cmd: 'tween',
+                    preload: {
+                        start,
+                        end,
+                        speed,
+                        ename: enemyEntity.name,
+                        eid: enemyEntity.id
+                    }
                 });
-
-                if (enemyPosition.x === enemyTween.x && enemyPosition.y === enemyTween.y) {
-                    enemyEntity.setCompsState(Components.Tween, {
-                        enabled: false
-                    });
-
-                    enemyEntity.setCompsState(Components.Owner, {
-                        enabled: false
-                    });
-                }
             }
         }
     }

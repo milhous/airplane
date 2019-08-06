@@ -5,37 +5,42 @@ import Components from 'components.game.js';
 
 /*
  * 缓动（每帧移动一段距离）
- * @param {object} startPoint 起点
- * @param {object} endPoint 终点
- * @param {number} speed 速度
- * @return {object} result 
+ * @param {number} x x轴位置
+ * @param {number} y y轴位置
+ * @param {boolean} isDestroy 是否达到目标位置销毁
+ * @param {number} eid 实体ID
+ * @param {number} ename 实体名称 
  */
-export function tween(startPoint, endPoint, speed) {
-    const startX = startPoint.x;
-    const startY = startPoint.y;
-    const endX = endPoint.x;
-    const endY = endPoint.y;
+export function move({
+    x,
+    y,
+    isDestroy = false,
+    eid,
+    ename
+}) {
+    const entity = ecs.entityManager.get(ename, eid);
 
-    let x = 0;
-    let y = 0;
-
-    // 缓动效果
-    const offsetX = endX - startX > 0 ? speed : -speed;
-    const offsetY = endY - startY > 0 ? speed : -speed;
-
-    x += startX + offsetX;
-    y += startY + offsetY;
-
-    if ((offsetX > 0 && x > endX) || (offsetX < 0 && x < endX)) {
-        x = endX;
+    if (!entity) {
+        return;
     }
 
-    if ((offsetY > 0 && y > endY) || (offsetY < 0 && y < endY)) {
-        y = endY;
-    }
+    const entityPosition = entity.getComp(Components.Position);
+    const entityTween = entity.getComp(Components.Tween);
 
-    return {
+    entity.setCompsState(Components.Position, {
         x,
         y
+    });
+
+    if (entityPosition.x === entityTween.x && entityPosition.y === entityTween.y) {
+        entity.setCompsState(Components.Tween, {
+            enabled: false
+        });
+
+        if (isDestroy) {
+            entity.setCompsState(Components.Owner, {
+                enabled: false
+            });
+        }
     }
 };

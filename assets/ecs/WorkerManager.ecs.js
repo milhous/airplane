@@ -54,9 +54,7 @@ export class WorkerManager {
         }
 
         const blob = this._blobsMap.get(name);
-
-        console.log('worker', blob);
-
+        
         if (blob === undefined) {
             return;
         }

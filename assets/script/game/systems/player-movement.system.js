@@ -16,12 +16,20 @@ export default class PlayerMovementSystem extends ecs.System {
     onLoad() {
         // 边界检测
         this._ecs.workerManager.open('Math', 'boundaryDetection', (data) => {
+            if (data.ename !== 'Player') {
+                return;
+            }
+
             this.boundaryDetection(data);
         });
 
         // 缓动
         this._ecs.workerManager.open('Math', 'tween', (data) => {
-            this.move(data);
+            if (data.ename !== 'Player') {
+                return;
+            }
+
+            common.move(data);
         });
     }
 
@@ -70,7 +78,9 @@ export default class PlayerMovementSystem extends ecs.System {
                 preload: {
                     position,
                     originSize,
-                    maxSize
+                    maxSize,
+                    ename: playerEntity.name,
+                    eid: playerEntity.id
                 }
             });
         }
@@ -95,7 +105,9 @@ export default class PlayerMovementSystem extends ecs.System {
                 preload: {
                     start,
                     end,
-                    speed
+                    speed,
+                    ename: playerEntity.name,
+                    eid: playerEntity.id
                 }
             });
         }
@@ -107,9 +119,11 @@ export default class PlayerMovementSystem extends ecs.System {
      */
     boundaryDetection({
         x,
-        y
+        y,
+        eid,
+        ename
     }) {
-        const playerEntity = this._ecs.entityManager.find('Player', Components.BasicsProp, { 'name': 'EVANGELION' });
+        const playerEntity = this._ecs.entityManager.get(ename, eid);
 
         if (!playerEntity) {
             return;
@@ -120,35 +134,5 @@ export default class PlayerMovementSystem extends ecs.System {
             x,
             y
         });
-    }
-
-    /*
-     * 移动
-     * @param {object} data 数据
-     */
-    move({
-        x,
-        y
-    }) {
-        const playerEntity = this._ecs.entityManager.find('Player', Components.BasicsProp, { 'name': 'EVANGELION' });
-
-        if (!playerEntity) {
-            return;
-        }
-
-        const playerPosition = playerEntity.getComp(Components.Position);
-        const playerTween = playerEntity.getComp(Components.Tween);
-
-        playerEntity.setCompsState(Components.Position, {
-            x,
-            y
-        });
-
-        if (playerPosition.x === playerTween.x && playerPosition.y === playerTween.y) {
-            // 更新玩家缓动
-            playerEntity.setCompsState(Components.Tween, {
-                enabled: false
-            });
-        }
     }
 }
