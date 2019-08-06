@@ -69,6 +69,46 @@ const script = `
         }
     };
 
+    /*
+     * 碰撞检测
+     * @param {object} selfColliders 自身碰撞元素
+     * @param {object} otherColliders 其他碰撞元素
+     */
+    const collisionDetection = (selfColliders, otherColliders) => {
+        const result = new Map();
+        let arr = [];
+
+        for (const [selfId, selfData] of selfColliders.entries()) {
+            for (const [otherId, otherData] of otherColliders.entries()) {
+                if(
+                  Math.abs(selfData.x - otherData.x) < selfData.width/2 + otherData.width/2 //横向判断
+                  &&
+                  Math.abs(selfData.y - otherData.y) < selfData.height/2 + otherData.height/2 //纵向判断
+                ){
+                    if (!result.has(selfData.name)) {
+                        result.set(selfData.name, [selfId]);
+                    } else {
+                        arr = result.get(selfData.name);
+
+                        arr.push(selfId);
+                    }
+
+                    if (!result.has(otherData.name)) {
+                        result.set(otherData.name, [otherId]);
+                    } else {
+                        arr = result.get(otherData.name);
+
+                        arr.push(otherId);
+                    }
+
+                    break;
+                }       
+            }
+        }
+
+        return result;
+    };
+
     onmessage = function(message) {
         const data = message.data;
 
@@ -99,6 +139,17 @@ const script = `
 
                 postMessage({
                     cmd: 'boundaryDetection',
+                    data: result
+                });
+
+                break;
+            case 'collisionDetection':
+                const { selfColliders, otherColliders } = data.preload;
+
+                result = collisionDetection(selfColliders, otherColliders);
+
+                postMessage({
+                    cmd: 'collisionDetection',
                     data: result
                 });
 

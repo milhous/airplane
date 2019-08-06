@@ -3,6 +3,7 @@ import * as common from '../common.game.js';
 // 组件
 import Components from '../components.game.js';
 
+// 敌人移动
 export default class EnemyMovementSystem extends ecs.System {
     static get name() {
         return 'EnemyMovementSystem';
@@ -31,10 +32,7 @@ export default class EnemyMovementSystem extends ecs.System {
 
     onReceive(data) {}
 
-    /*
-     * 更新
-     * @param {object} data 数据
-     */
+    // 更新
     updateEntity() {
         const enemyMap = this._ecs.entityManager.getMap('Enemy');
 

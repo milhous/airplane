@@ -1,6 +1,7 @@
 // 组件
 import Components from '../components.game.js';
 
+// 开火
 export default class OpenFireSystem extends ecs.System {
     static get name() {
         return 'OpenFireSystem';
@@ -14,13 +15,13 @@ export default class OpenFireSystem extends ecs.System {
 
     }
 
-    onUpdate() { }
+    onUpdate() {}
 
     /*
      * @param {object} data 火力数据
      */
     onReceive(data) {
-        for(const item of data.firepowers) {
+        for (const item of data.firepowers) {
             this.spawnAmmoEntity(item);
         }
     }
@@ -30,6 +31,8 @@ export default class OpenFireSystem extends ecs.System {
      * @param {string} id ID
      * @param {number} damage 伤害
      * @param {number} model 型号
+     * @param {number} width 宽度
+     * @param {number} height 高度
      * @param {number} x x轴位置
      * @param {number} y y轴位置
      * @param {number} speed 移动速度
@@ -38,6 +41,8 @@ export default class OpenFireSystem extends ecs.System {
         id,
         damage = 0,
         model,
+        width,
+        height,
         x,
         y,
         speed
@@ -51,8 +56,12 @@ export default class OpenFireSystem extends ecs.System {
             maxHealthPoint: damage,
             model
         });
+        const ammoShape = new Components.Shape({
+            width,
+            height
+        });
         const ammoPosition = new Components.Position(x, y);
-        const ammoTween = new Components.Tween({ 
+        const ammoTween = new Components.Tween({
             x,
             y: worldShape.height,
             enabled: true,
@@ -62,6 +71,7 @@ export default class OpenFireSystem extends ecs.System {
         const ammoEntity = new ecs.Entity('Ammo')
             .addComp(ammoOwner)
             .addComp(ammoProp)
+            .addComp(ammoShape)
             .addComp(ammoPosition)
             .addComp(ammoTween);
     }

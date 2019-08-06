@@ -148,9 +148,12 @@ cc.Class({
     // 开火
     openFire() {
         const firepowers = this._playerComp.getFirepowerInfo(1);
+        const ammoSize = this.bulletPool.getSize();
 
         for (const item of firepowers) {
             item.speed = this._basic.AMMO_SPEED;
+            item.width = ammoSize.width;
+            item.height = ammoSize.height;
         }
 
         ecs.send(Systems.OpenFireSystem, {

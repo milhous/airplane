@@ -3,6 +3,7 @@ import * as common from '../common.game.js';
 // 组件
 import Components from '../components.game.js';
 
+// 敌人组装
 export default class EnemySpawnSystem extends ecs.System {
     static get name() {
         return 'EnemySpawnSystem';
